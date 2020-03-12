@@ -10,11 +10,19 @@ async function loadURLPage(url) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto(url)
+    return page
 }
 
-async function checkPrice() {
+async function checkPrice(page) {
     page.reload()
     let html = await page.evaluate(() => document.body.innerHTML)
     console.log(html)
     //priceblock_ourprice
 }
+
+async function monitor() {
+    let page = await loadURLPage(gtx1080ti)
+    await checkPrice(page)
+}
+
+monitor()
