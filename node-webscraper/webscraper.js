@@ -60,11 +60,11 @@ async function sendNotification(price, url) {
     console.log("Message sent: $s", info.messageId)
 }
 
-async function startTracking() {
-    const page = await loadURLPage(gtx1080ti)
+async function startTracking(url) {
+    const page = await loadURLPage(url)
 
-    // cronjob that checks the price every 15 seconds.
-    let job = new CronJob('*/15 * * * * *', function() {
+    // cronjob that checks the price every 15 minutes.
+    let job = new CronJob('* */15 * * * *', function() {
         checkPrice(page)
     }, null, true, null, null, true)
     job.start()
@@ -73,7 +73,7 @@ async function startTracking() {
 async function monitor(urlList) {
     urlList.forEach(async url => {
         const page = await loadURLPage(url)
-        await checkPrice(page, url)
+        await startTracking(url)
     })
 }
 
